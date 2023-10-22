@@ -13,7 +13,7 @@ let reciept = []
 let log = document.querySelector("#log")
 let pads = document.querySelectorAll(".pad")
 let clear = document.querySelector("#clear")
-let output = document.querySelector("#showInput")
+let output = document.querySelector("#display")
 
 //--Event Listeners--
 
@@ -37,8 +37,8 @@ function handleClick() {
 //Input Validation and pass through
 let outputContext = ""
 function verify(input) {
-    let negativeNumber = /^-?\d*\.{0,1}\d*$/
-    let positiveNumber = /^\d*\.{0,1}\d*$/
+    let negativeNumber = /^-?(?!00)[0-9]*\.{0,1}[0-9]*$/
+    let positiveNumber = /^(?!00)[0-9]*\.{0,1}[0-9]*$/
 
     if (validNum.includes(input)) {
         console.log("valid-input")
@@ -67,12 +67,12 @@ function verify(input) {
     }
     else if (validOperators.includes(input)) {
         console.log("valid-operator")
-        if (!validOperators.includes(outputContext)) {
+        if (!validOperators.includes(outputContext) && outputContext !== "") {
             if (reciept.includes("=")) {
                 reciept = [outputContext]
                 outputContext = input
                 console.log("Continuing with last Calculated Number")
-            } else if (outputContext !== "") {
+            } else {
                 reciept.push(outputContext)
                 outputContext = input
                 console.log("Push prev show Operator")
@@ -117,10 +117,9 @@ function verify(input) {
         logger()
     } else if (input == "Delete") {
         log.textContent = ""
-        output.textContent = ""
+        output.textContent = "0"
         outputContext = ""
         reciept = []
-        logger()
     } else if (input == "Enter") {
         if (log.textContent.includes("=")) {
             console.log("meep")
@@ -133,7 +132,6 @@ function verify(input) {
     }
 }
 
-
 function logger() {
     let templog = reciept.slice(0)
     let logged = ""
@@ -145,44 +143,50 @@ function logger() {
 }
 
 //Calculation Part 
-
 function consolidate() {
     let tempArray = reciept.map((item, index) => {
         return index % 2 == 0 ? Number(item) : item
     })
     while (tempArray.length > 1 && !tempArray.includes("=")) {
-        tempArray.map((item, index) => {
-            if (item == "*") {
-                let formula = tempArray.splice(index - 1, 3)
-                result = formula[0] * formula[2]
-                tempArray.splice(index - 1, 0, result)
+        let priorityOps = ["*", "/"]
+        let pemdas = (input) => {
+            return priorityOps.includes(input)
+        }
+        if (tempArray.some(pemdas)) {
+            console.log(reciept.some(pemdas))
+            for (let i = 0; i < priorityOps.length; i++) {
+                tempArray.map((item, index) => {
+                    if (item == priorityOps[i]) {
+                        let formula = tempArray.splice(index - 1, 3)
+                        result = calculate(formula[0], item, formula[2])
+                        tempArray.splice(index - 1, 0, result)
+                    }
+                })
             }
-            console.log(tempArray)
-        })
-        tempArray.map((item, index) => {
-            if (item == "/") {
-                let formula = tempArray.splice(index - 1, 3)
-                result = formula[0] / formula[2]
-                tempArray.splice(index - 1, 0, result)
-            }
-            console.log(tempArray)
-        })
-        tempArray.map((item, index) => {
-            if (item == "+") {
-                let formula = tempArray.splice(index - 1, 3)
-                result = formula[0] + formula[2]
-                tempArray.splice(index - 1, 0, result)
-            }
-            console.log(tempArray)
-        })
-        tempArray.map((item, index) => {
-            if (item == "-") {
-                let formula = tempArray.splice(index - 1, 3)
-                result = formula[0] - formula[2]
-                tempArray.splice(index - 1, 0, result)
-            }
-            console.log(tempArray)
-        })
+        } else {
+            tempArray.map((item, index) => {
+                if (index % 2 == 1) {
+                    let formula = tempArray.splice(index - 1, 3)
+                    result = calculate(formula[0], item, formula[2])
+                    tempArray.splice(index - 1, 0, result)
+                }
+                console.log(tempArray)
+            })
+        }
+    }
+    function calculate(a, operator, b) {
+        switch (operator) {
+            case '*':
+                return a * b;
+            case '/':
+                return a / b;
+            case '+':
+                return a + b;
+            case '-':
+                return a - b;
+            default:
+                return NaN;
+        }
     }
     reciept.push("=")
     outputContext = tempArray[0]
