@@ -39,21 +39,31 @@ let outputContext = ""
 function verify(input) {
     let negativeNumber = /^-?\d*\.{0,1}\d*$/
     let positiveNumber = /^\d*\.{0,1}\d*$/
+
     if (validNum.includes(input)) {
         console.log("valid-input")
-        if (positiveNumber.test(outputContext + input)) {
-            outputContext += input
-            console.log("Enter Positive values")
-        } else if (negativeNumber.test(outputContext + input) && validOperators.includes(log.textContent[log.textContent.length - 2]) || log.textContent == "-") {
-            outputContext += input
-            console.log("Enter negative values")
+        if ((output.textContent + input).length < 14) {
+            if (positiveNumber.test(outputContext + input)) {
+                outputContext += input
+                console.log("Enter Positive values")
+            } else if (negativeNumber.test(outputContext + input) && validOperators.includes(log.textContent[log.textContent.length - 2]) || log.textContent == "-") {
+                outputContext += input
+                console.log("Enter negative values")
+            }
+            else if (validOperators.includes(outputContext)) {
+                reciept.push(outputContext)
+                outputContext = ""
+                outputContext += input
+                console.log("push Prev Context Allow Num")
+            }
+            logger()
+        } else {
+            output.textContent = "Digit Limit Reached"
+            setTimeout(() => {
+                logger()
+            }, 1000)
         }
-        else if (validOperators.includes(outputContext)) {
-            reciept.push(outputContext)
-            outputContext = ""
-            outputContext += input
-            console.log("push Prev Context Allow Num")
-        }
+
     }
     else if (validOperators.includes(input)) {
         console.log("valid-operator")
@@ -94,6 +104,7 @@ function verify(input) {
             outputContext = input
             console.log("potential negative Start")
         }
+        logger()
     } else if (input == "Backspace") {
         if (outputContext != "" && outputContext == Number) {
             outputContext = outputContext.slice(0).substring(0, outputContext.length - 1)
@@ -103,11 +114,13 @@ function verify(input) {
         } else if (log.textContent.includes("=")) {
 
         }
+        logger()
     } else if (input == "Delete") {
         log.textContent = ""
         output.textContent = ""
         outputContext = ""
         reciept = []
+        logger()
     } else if (input == "Enter") {
         if (log.textContent.includes("=")) {
             console.log("meep")
@@ -116,10 +129,8 @@ function verify(input) {
             consolidate()
             console.log("calculating")
         }
+        logger()
     }
-    output.textContent = outputContext
-    logger()
-    console.log(reciept)
 }
 
 
@@ -130,6 +141,7 @@ function logger() {
         logged += String(templog[i])
     }
     log.textContent = logged + outputContext
+    output.textContent = outputContext
 }
 
 //Calculation Part 
