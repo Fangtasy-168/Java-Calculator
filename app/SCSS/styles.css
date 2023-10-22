@@ -1,0 +1,135 @@
+:root {
+  --background: #e0ecde;
+  --container: #BF9F84;
+  --pads: #CDE0C9;
+  --screen: #CDE0C9;
+  --function: #818536;
+}
+
+/*
+    --deepgreen: #2c6975;
+    --bluegreen: #6BB2A0;
+    --greygreen: #CDE0C9;
+    --whitegreen: #e0ecde;
+    --white: #ffffff;
+*/
+html {
+  box-sizing: border-box;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background);
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  font-family: "Orbitron", Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#container {
+  height: 600px;
+  width: 400px;
+  padding: 10px;
+  border: solid black 3px;
+  background-color: var(--container);
+  border-radius: 10px;
+}
+
+#screen {
+  box-sizing: border-box;
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding: 10px;
+  text-align: end;
+  background-color: var(--screen);
+  font-family: "Orbitron", Verdana, Geneva, Tahoma, sans-serif;
+  box-shadow: 1px 1px 1px inset;
+}
+
+#log {
+  height: 30%;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  overflow-x: auto;
+}
+
+#showInput {
+  font-size: xx-large;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column-reverse;
+  height: 70%;
+  overflow-x: auto;
+}
+
+#buttonsContainer {
+  display: grid;
+  width: 100%;
+  height: 75%;
+}
+
+#touchPad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  -moz-column-gap: 5px;
+       column-gap: 5px;
+  row-gap: 5px;
+  padding: 2px;
+}
+
+#logo {
+  text-align: right;
+  padding-top: 1px;
+  font-size: 1.3em;
+  color: var(--background);
+}
+
+.pad {
+  display: flex;
+  font-size: medium;
+  justify-content: center;
+  align-items: center;
+  font-size: x-large;
+  font-family: "Orbitron", Verdana, Geneva, Tahoma, sans-serif;
+  background-color: var(--pads);
+  border-radius: 2px;
+  box-shadow: 2px 2px 2px;
+}
+
+.function {
+  background-color: var(--function);
+}
+
+#add {
+  grid-column-start: 4;
+  grid-row-start: 2;
+  grid-row-end: 4;
+}
+
+#equals {
+  grid-column-start: 4;
+  grid-row-start: 4;
+  grid-row-end: 6;
+}
+
+#zero {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}/*# sourceMappingURL=styles.css.map */
