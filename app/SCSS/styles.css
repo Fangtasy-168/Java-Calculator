@@ -69,7 +69,7 @@ footer {
   overflow-x: auto;
 }
 
-#showInput {
+#display {
   font-size: xx-large;
   display: flex;
   align-items: flex-end;
@@ -96,9 +96,9 @@ footer {
 
 #logo {
   text-align: right;
-  padding-top: 1px;
   font-size: 1.3em;
   color: var(--background);
+  font-weight: 900;
 }
 
 .pad {
