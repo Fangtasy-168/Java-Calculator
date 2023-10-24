@@ -106,13 +106,15 @@ function verify(input) {
         }
         logger()
     } else if (input == "Backspace") {
-        if (outputContext != "" && outputContext == Number) {
+        if (outputContext != "" && typeof outputContext == "string") {
             outputContext = outputContext.slice(0).substring(0, outputContext.length - 1)
+            console.log("Backspaced")
         } else if (outputContext == "" && reciept.length > 0) {
             outputContext = reciept[reciept.length - 1]
             reciept.pop()
+            console.log("deleted previous entry")
         } else if (log.textContent.includes("=")) {
-
+            console.log("meep")
         }
         logger()
     } else if (input == "Delete") {
@@ -130,6 +132,7 @@ function verify(input) {
         }
         logger()
     }
+
 }
 
 function logger() {

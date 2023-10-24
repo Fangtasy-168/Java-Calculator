@@ -37,8 +37,8 @@ footer{
     font-family: "Orbitron", Verdana, Geneva, Tahoma, sans-serif;
 }
 #container{
-    height: 600px;
-    width: 400px;
+    height: 700px;
+    width: 500px;
     padding: 10px;
     border: solid black 3px;
     background-color: var(--container);
@@ -50,29 +50,35 @@ footer{
     height: 20%;
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
     padding: 10px;
     text-align: end;     
     background-color: var(--screen);
-    font-family: "Orbitron", Verdana, Geneva, Tahoma, sans-serif;
-    box-shadow: 1px 1px 1px inset;
-    
+    font-family: "Orbitron", Verdana, Geneva, Tahoma, sans-serif;    
+    box-shadow: 1px 1px 1px inset;    
 }
 #log{
     height: 30%;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row-reverse;
     align-items: flex-end;
-    overflow-x: auto;
+    overflow: auto;
 }
 #display{
-    font-size: xx-large;
+    font-size: 2.75rem;
     display: flex;
     align-items: flex-end;
-    flex-direction: column-reverse;
+    flex-direction: row-reverse;
     height: 70%;
-    overflow-x: auto;
+    overflow: auto;
 }
+::-webkit-scrollbar{
+   height: 2px;
+   
+}
+::-webkit-scrollbar-thumb{
+    background: #BF9F84;
+}
+
 #buttonsContainer{
     display: grid;
     width: 100%;
@@ -91,6 +97,7 @@ footer{
     font-size: 1.3em;
     color: var(--background);
     font-weight: 900;    
+    margin-top: 10px;
 }
 
 .pad{
@@ -98,7 +105,7 @@ footer{
     font-size: medium;
     justify-content: center;
     align-items: center;
-    font-size: x-large;
+    font-size: 1.5rem;
     font-family: "Orbitron", Verdana, Geneva, Tahoma, sans-serif;
     background-color: var(--pads); 
     border-radius: 2px;
@@ -122,3 +129,4 @@ footer{
     grid-column-start: 1;
     grid-column-end: 3;
 }
+
