@@ -1,18 +1,10 @@
 //Vanilla Javascript Calculator
-
-/*
-Need it to have the order of operations in it maybe something of switch cases or .thenables?
-need some kind of regex i guess where inputs are numbers only, event handles won't have any relations to the keydowns..
-how to start it... 
-lets go with addition first?
-*/
 let validInputs = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "*", "/", "+", "-", "Backspace", "Enter"]
 let validNum = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
 let validOperators = ["*", "/", "+", "-"]
 let reciept = []
 let log = document.querySelector("#log")
 let pads = document.querySelectorAll(".pad")
-let clear = document.querySelector("#clear")
 let output = document.querySelector("#display")
 
 //--Event Listeners--
