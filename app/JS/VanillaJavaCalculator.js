@@ -38,15 +38,15 @@ function verify(input) {
             if (positiveNumber.test(outputContext + input)) {
                 outputContext += input
                 console.log("Enter Positive values")
-            } else if (negativeNumber.test(outputContext + input) && validOperators.includes(log.textContent[log.textContent.length - 2]) || log.textContent == "-") {
-                outputContext += input
-                console.log("Enter negative values")
             }
-            else if (validOperators.includes(outputContext)) {
+            else if (validOperators.includes(outputContext) && !validOperators.includes(reciept[reciept.length - 1])) {
                 reciept.push(outputContext)
                 outputContext = ""
                 outputContext += input
                 console.log("push Prev Context Allow Num")
+            } else if (negativeNumber.test(outputContext + input) || log.textContent == "-") {
+                outputContext += input
+                console.log("Enter negative values")
             }
             logger()
         } else {
@@ -124,7 +124,7 @@ function verify(input) {
         }
         logger()
     }
-
+    console.log(reciept)
 }
 
 function logger() {
