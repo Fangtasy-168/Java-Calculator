@@ -6,19 +6,13 @@
   --function: #818536;
 }
 
-/*
-    --deepgreen: #2c6975;
-    --bluegreen: #6BB2A0;
-    --greygreen: #CDE0C9;
-    --whitegreen: #e0ecde;
-    --white: #ffffff;
-*/
 html {
   box-sizing: border-box;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   margin: 0;
+  overflow-y: hidden;
 }
 
 body {
