@@ -1,10 +1,9 @@
 # Java-Calculator
 
-## Camp Project of a Java Calculator
+Camp Project of a Java Calculator
+Repository contains both a vanilla version and a Jquery version of the code
 
-repository contains both a vanilla version and a Jquery version of the code
-
-# some functionality of the calculator
+# Some Functionality of the Calculator
 
 ### click functionality
 
