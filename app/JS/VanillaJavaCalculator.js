@@ -32,14 +32,14 @@ function verify(input) {
     let negativeNumber = /^-?(?!00)[0-9]*\.{0,1}[0-9]*$/
     let positiveNumber = /^(?!00)[0-9]*\.{0,1}[0-9]*$/
 
-    if (validNum.includes(input)) {
+    if (validNum.includes(input) && !reciept.includes("=")) {
         console.log("valid-input")
         if ((output.textContent + input).length < 14) {
             if (positiveNumber.test(outputContext + input)) {
                 outputContext += input
                 console.log("Enter Positive values")
             }
-            else if (validOperators.includes(outputContext) && !validOperators.includes(reciept[reciept.length - 1])) {
+            else if (validOperators.includes(outputContext) && !validOperators.includes(reciept[reciept.length - 1]) && log.textContent != "-") {
                 reciept.push(outputContext)
                 outputContext = ""
                 outputContext += input

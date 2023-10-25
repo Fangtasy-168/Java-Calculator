@@ -26,19 +26,19 @@ function verifyInput(input) {
     console.log(input)
     let negativeNumber = /^-?(?!00)[0-9]*\.{0,1}[0-9]*$/
     let positiveNumber = /^(?!00)[0-9]*\.{0,1}[0-9]*$/
-    if (validNum.includes(input)) {
+    if (validNum.includes(input) && !reciept.includes("=")) {
         console.log("valid-input")
         if ((output.text() + input).length < 14) {
             if (positiveNumber.test(outputContext + input)) {
                 outputContext += input
                 console.log("Enter Positive values")
             }
-            else if (validOperators.includes(outputContext) && !validOperators.includes(reciept[reciept.length - 1])) {
+            else if (validOperators.includes(outputContext) && !validOperators.includes(reciept[reciept.length - 1]) && log.text() != "-") {
                 reciept.push(outputContext)
                 outputContext = ""
                 outputContext += input
                 console.log("push Prev Context Allow Num")
-            } else if (negativeNumber.test(outputContext + input) || log.textContent == "-") {
+            } else if (negativeNumber.test(outputContext + input) || log.text() == "-") {
                 outputContext += input
                 console.log("Enter negative values")
             }
