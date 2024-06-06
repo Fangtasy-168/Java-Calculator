@@ -27,6 +27,7 @@ export default function Calculator() {
     const [log, setLog] = useState([])
     const [display, setDisplay] = useState('')
     const [message, setMessage] = useState('')
+    const [calculated, setCalculated] = useState(false)
     let negativeNumber = /^-?(?!00)[0-9]*\.?[0-9]*$/
     let positiveNumber = /^(?!00)[0-9]*\.?[0-9]*$/
 
@@ -40,26 +41,30 @@ export default function Calculator() {
 
     function handleSpecial(validInput) {
         if (validInput.input == 'Backspace') {
+            if (log.includes('=')) {
 
-            if (display.length) {
-                setDisplay(display.slice(0, display.length - 1))
-                console.log(typeof display)
-                console.log('one by one')
             } else {
-                setDisplay(log[log.length - 1])
-                setLog(log.slice(0, log.length - 1))
-                console.log('popped')
+                if (display && display.length - 1) {
+                    setDisplay(display.slice(0, display.length - 1))
+                    console.log(typeof display)
+                    console.log('one by one')
+                } else {
+                    setDisplay(log[log.length - 1])
+                    setLog(log.slice(0, log.length - 1))
+                    console.log('popped')
+                }
             }
         }
         else if (validInput.input == 'Delete') {
-            setDisplay('')
+            calculated ? setDisplay('') : null
         }
         else if (validInput.input == 'Enter') {
-            if (display != '.' && display != '-' && display) {
+            if (display != '.' && display != '-' && display && log.length % 2 == '0' && !calculated) {
                 consolidate([...log, display])
+                setCalculated(!calculated)
             }
             else {
-                setMessage('Not A Valid Formula')
+                setMessage('Not A Valid')
                 setTimeout(() => {
                     setMessage('')
                 }, 500)
@@ -74,9 +79,10 @@ export default function Calculator() {
     function handleOperator(validInput) {
         let onScreen = validInputs.find(input => input.input == display)
         let lastLogged = validInputs.find(input => input.input == log[log.length - 1])
-        if (log.includes('=')) {
+        if (calculated) {
             setLog([display])
             setDisplay(validInput.input)
+            setCalculated(!calculated)
         }
         else if (validInput.input !== '-') {
             if (display) {
@@ -133,9 +139,10 @@ export default function Calculator() {
                 setMessage('')
             }, 500)
         }
-        else if (log.includes('=')) {
+        else if (calculated) {
             setLog([])
             setDisplay(validInput.input)
+            setCalculated(!calculated)
         }
         else if (onScreen && onScreen.inputType == 'operator') {
             if (onScreen.input == '-') {
@@ -263,7 +270,7 @@ function Display({ log, display, message }) {
 function UserButtons({ inputChecker }) {
     let buttons = []
     validInputs.map((item) => {
-        item.set !== 'hidden' ? buttons.push(<div key={item.key} className={item.type + " pads"} id={item.id} onClick={() => inputChecker(item.input)}>{item.key}</div>) : null
+        item.set !== 'hidden' ? buttons.push(<div key={item.key} className={item.inputType + " pads"} id={item.id} onClick={() => inputChecker(item.input)}>{item.key}</div>) : null
     })
     return (
         <div id='touchPad'>
