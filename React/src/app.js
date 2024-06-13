@@ -18,9 +18,9 @@ const validInputs = [
     { set: 'display', inputType: 'interger', input: '0', key: '0', id: 'zero' },
     { set: 'display', inputType: 'interger', input: '.', key: '.', id: '.' },
     { set: 'display', inputType: 'special', input: 'Enter', key: 'Enter', id: 'enter' },
-    { set: 'display', inputType: 'special', input: 'Delete', key: 'CE', id: 'delete' },
-    { set: 'hidden', inputType: 'special', input: 'Backspace', key: 'Backspace', id: 'backspace' },
-    { set: 'hidden', inputType: 'special', input: 'Escape', key: 'Escape', id: 'Escape' }
+    { set: 'switch', inputType: 'special', input: 'Delete', key: 'CE', id: 'delete' },
+    { set: 'switch', inputType: 'special', input: 'Backspace', key: 'Bkspc', id: 'backspace' },
+    { set: 'switch', inputType: 'special', input: 'Escape', key: 'Esc', id: 'escape' }
 ]
 
 export default function Calculator() {
@@ -44,24 +44,37 @@ export default function Calculator() {
             if (log.includes('=')) {
 
             } else {
-                if (display && display.length - 1) {
-                    setDisplay(display.slice(0, display.length - 1))
-                    console.log(typeof display)
-                    console.log('one by one')
-                } else {
+                if (display) {
+                    if (display.length) {
+                        setDisplay(display.slice(0, display.length - 1))
+                        console.log('one by one')
+                    }
+                }
+                else if (log.length) {
                     setDisplay(log[log.length - 1])
                     setLog(log.slice(0, log.length - 1))
                     console.log('popped')
                 }
+                else {
+                    setMessage('Nothing left')
+                    setTimeout(() => {
+                        setMessage('')
+                    }, 500)
+                }
             }
         }
         else if (validInput.input == 'Delete') {
-            calculated ? setDisplay('') : null
+            if (!calculated && negativeNumber.test(display)) {
+                setDisplay('')
+            }
         }
         else if (validInput.input == 'Enter') {
             if (display != '.' && display != '-' && display && log.length % 2 == '0' && !calculated) {
                 consolidate([...log, display])
                 setCalculated(!calculated)
+            }
+            else if (calculated) {
+                consolidate([display].concat(log.slice(log.length - 3, log.length - 1)))
             }
             else {
                 setMessage('Not A Valid')
@@ -128,12 +141,13 @@ export default function Calculator() {
     }
     useEffect(() => {
         console.log(log)
+
     }, [log])
 
     function handleInputs(validInput) {
         let onScreen = validInputs.find(input => input.input == display)
         let lastLogged = validInputs.find(input => input.input == log[log.length - 1])
-        if (display.length > 32) {
+        if (display && display.length > 32) {
             setMessage('Digit Limit Exceeded')
             setTimeout(() => {
                 setMessage('')
@@ -241,8 +255,11 @@ export default function Calculator() {
     return (
         <>
             <Display log={log} display={display} message={message} />
-            <UserButtons inputChecker={inputChecker} />
-            <footer id='signature'>Fangtasy React Calculator</footer>
+            <UserButtons inputChecker={inputChecker} display={display} />
+            <footer id='signature'>
+                <div>Fangtasy React Calculator</div>
+                <div id="author">Made by Tony Fang</div>
+            </footer>
         </>
     )
 }
@@ -267,14 +284,39 @@ function Display({ log, display, message }) {
 }
 
 //Generates the buttons for user to click
-function UserButtons({ inputChecker }) {
+function UserButtons({ inputChecker, display }) {
     let buttons = []
+    let removal = display ? validInputs[16] : validInputs[18]
+    console.log(removal)
     validInputs.map((item) => {
-        item.set !== 'hidden' ? buttons.push(<div key={item.key} className={item.inputType + " pads"} id={item.id} onClick={() => inputChecker(item.input)}>{item.key}</div>) : null
+        item.set !== 'switch' ? buttons.push(<Buttons item={item} key={item.id} inputChecker={inputChecker} />) : null
     })
     return (
         <div id='touchPad'>
             {buttons}
+            <Buttons item={removal} inputChecker={inputChecker} />
+        </div>
+    )
+}
+
+function Buttons({ item, inputChecker }) {
+    const [pressed, setPressed] = useState('')
+
+    return (
+        <div
+            key={item.key}
+            className={item.inputType + " pads " + pressed}
+            id={item.id}
+            onClick={
+                () => {
+                    inputChecker(item.input)
+                    setPressed('pressed')
+                    setTimeout(() => {
+                        setPressed('')
+                    }, 100)
+                }
+            }
+        >{item.key}
         </div>
     )
 }
