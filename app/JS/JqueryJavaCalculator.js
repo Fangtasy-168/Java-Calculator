@@ -175,6 +175,6 @@ function consolidate() {
         }
     }
     reciept.push("=")
-    outputContext = tempArray[0]
+    outputContext = Math.round(tempArray[0] * 1000) / 1000
     console.log(tempArray)
 }
