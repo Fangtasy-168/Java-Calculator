@@ -28,8 +28,8 @@ export default function Calculator() {
     const [display, setDisplay] = useState('')
     const [message, setMessage] = useState('')
     const [calculated, setCalculated] = useState(false)
+    const [pressedKey, setPressedKey] = useState('')
     let negativeNumber = /^-?(?!00)[0-9]*\.?[0-9]*$/
-    let positiveNumber = /^(?!00)[0-9]*\.?[0-9]*$/
 
     //function to check users Inputs 
     function inputChecker(usersEntry) {
@@ -139,10 +139,10 @@ export default function Calculator() {
             }
         }
     }
-    useEffect(() => {
-        console.log(log)
+    // useEffect(() => {
+    //     console.log(log)
 
-    }, [log])
+    // }, [log])
 
     function handleInputs(validInput) {
         let onScreen = validInputs.find(input => input.input == display)
@@ -225,7 +225,7 @@ export default function Calculator() {
             }, 1000)
         }
         setLog([...log, "="])
-        setDisplay(newlog)
+        setDisplay(Math.round(newlog * 100000000) / 100000000)
     }
 
     function calculate(a, operator, b) {
@@ -246,7 +246,7 @@ export default function Calculator() {
     // Add an event listener to the document
     useEffect(() => {
         function documentKeydown(e) {
-            inputChecker(e.key)
+            setPressedKey(e.key)
         }
         document.addEventListener('keydown', documentKeydown)
         return () => document.removeEventListener('keydown', documentKeydown)
@@ -255,7 +255,7 @@ export default function Calculator() {
     return (
         <>
             <Display log={log} display={display} message={message} />
-            <UserButtons inputChecker={inputChecker} display={display} />
+            <UserButtons inputChecker={inputChecker} display={display} pressedKey={pressedKey} />
             <footer id='signature'>
                 <div>Fangtasy React Calculator</div>
                 <div id="author">Made by Tony Fang</div>
@@ -284,23 +284,32 @@ function Display({ log, display, message }) {
 }
 
 //Generates the buttons for user to click
-function UserButtons({ inputChecker, display }) {
+function UserButtons({ inputChecker, display, pressedKey }) {
     let buttons = []
     let removal = display ? validInputs[16] : validInputs[18]
-    console.log(removal)
     validInputs.map((item) => {
-        item.set !== 'switch' ? buttons.push(<Buttons item={item} key={item.id} inputChecker={inputChecker} />) : null
+        item.set !== 'switch' ? buttons.push(<Buttons item={item} key={item.id} inputChecker={inputChecker} pressedKey={pressedKey} />) : null
     })
     return (
         <div id='touchPad'>
             {buttons}
-            <Buttons item={removal} inputChecker={inputChecker} />
+            <Buttons item={removal} inputChecker={inputChecker} pressedKey={pressedKey} />
         </div>
     )
 }
 
-function Buttons({ item, inputChecker }) {
+function Buttons({ item, inputChecker, pressedKey }) {
     const [pressed, setPressed] = useState('')
+
+    useEffect(() => {
+        if (pressedKey == item.input) {
+            inputChecker(item.input);
+            setPressed('pressed');
+            setTimeout(() => {
+                setPressed('');
+            }, 100);
+        }
+    }, [pressedKey]);
 
     return (
         <div
